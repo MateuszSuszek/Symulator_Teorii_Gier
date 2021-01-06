@@ -14,4 +14,6 @@ W ramach projektu stworzę symulator gier z kombinatorycznej teorii gier przy u�
 		-Domineerig.
 
 	
-	Obliczanie strategii wygrywającej oraz reprezentacja graficzna każdej z tych gier jest podobna, zatem podzielenie kodu na odpowiednie moduły odpowiedzialne za poszczególne zadania umożliwi znacznie szybsze dodawanie nowych gier do programu, wymagające jedynie niewielkich modyfikacji.
+	Obliczanie strategii wygrywającej oraz reprezentacja graficzna każdej z tych gier jest podobna,
+zatem podzielenie kodu na odpowiednie moduły odpowiedzialne za poszczególne zadania umożliwi znacznie 
+szybsze dodawanie nowych gier do programu, wymagające jedynie niewielkich modyfikacji.

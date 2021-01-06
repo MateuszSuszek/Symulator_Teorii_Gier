@@ -1,0 +1,57 @@
+\documentclass[a4paper]{article}
+% Kodowanie latain 2
+%\usepackage[latin2]{inputenc}
+\usepackage[T1]{fontenc}
+% Można też użyć UTF-8
+\usepackage[utf8]{inputenc}
+
+% Język
+\usepackage[english]{babel}
+
+\usepackage{graphics}
+% - szersza strona
+\usepackage[nofoot,hdivide={2cm,*,2cm},vdivide={2cm,*,2cm}]{geometry}
+
+\usepackage{hyperref}
+
+\pagestyle{empty}
+
+% dane autora
+\author{Mateusz Suszek}
+\title{Wstęp do programowania w języku C \\ Opis projektu}
+\date{}
+
+\begin{document}
+	
+\Large{
+	
+	\maketitle
+	
+	\thispagestyle{empty}
+	
+	W ramach projektu stworzę symulator gier z kombinatorycznej teorii gier przy użyciu GTK oraz Glade.
+	Program umożliwi użytkownikowi grę w wybrane gry przeciwko komputerowi lub innemu graczowi. \\
+	
+	Dla każdej gry gracz będzie miał możliwość:
+	\begin{enumerate}
+		\item[$\bullet$] Dostosować rozmiar planszy,
+		\item[$\bullet$] Zdecydować o tym, kto rozpocznie grę,
+		\item[$\bullet$] Wybrać, czy przeciwnikiem steruje komputer,
+		\item[$\bullet$] Zapisać oraz wczytać stan gry, który zostanie zachowany pomiędzy sesjami.\\
+	\end{enumerate}
+	 
+	Obsługiwane gry:
+	
+	\begin{enumerate}
+		\item[$\bullet$] Nim oraz jego warianty,
+		\item[$\bullet$] Uproszczona wersja gry Obstruction\footnote{\url{http://www.lkozma.net/game.html}} $(1\times n)$,
+		\item[$\bullet$] Domineerig.
+	\end{enumerate}
+	Postaram się w miarę możliwości poszerzyć tę listę.\\
+	
+	Obliczanie strategii wygrywającej oraz reprezentacja graficzna każdej z tych gier jest podobna, zatem podzielenie kodu na odpowiednie moduły odpowiedzialne za poszczególne zadania umożliwi znacznie szybsze dodawanie nowych gier do programu, wymagające jedynie niewielkich modyfikacji.
+	
+	
+
+}
+\end{document}

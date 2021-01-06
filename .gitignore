@@ -53,3 +53,5 @@ dkms.conf
 
 # Tex files
 *.aux
+*.log
+*.synctex.gz

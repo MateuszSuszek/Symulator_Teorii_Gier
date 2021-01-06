@@ -6,7 +6,7 @@
 	Dla każdej gry gracz będzie miał możliwość:
 		-Dostosować rozmiar planszy,
 		-Zdecydować o tym, kto rozpocznie grę,
-	  -Wybrać, czy przeciwnikiem steruje komputer,
+	  	-Wybrać, czy przeciwnikiem steruje komputer,
 		-Zapisać oraz wczytać stan gry, który zostanie zachowany pomiędzy sesjami.
 	 
 	Obsługiwane gry:
@@ -16,5 +16,5 @@
 
 	
 	Obliczanie strategii wygrywającej oraz reprezentacja graficzna każdej z tych gier jest podobna, 
-	zatem podzielenie kodu na odpowiednie moduły odpowiedzialne za poszczególne zadania umożliwi znacznie 
-	szybsze dodawanie nowych gier do programu, wymagające jedynie niewielkich modyfikacji.
+	zatem podzielenie kodu na odpowiednie moduły odpowiedzialne za poszczególne zadania umożliwi
+	znacznie szybsze dodawanie nowych gier do programu, wymagające jedynie niewielkich modyfikacji.

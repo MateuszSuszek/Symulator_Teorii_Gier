@@ -2,13 +2,14 @@
 #include "head.h"
 #include <gtk/gtk.h>
 
-GtkWidget *mainWindow;
-GtkLabel *mainLabel;
 
-int main(int argc, char *argv[]){
+
+void CreateMenuWindow(){
+
+  GtkWidget *mainWindow;
+  GtkLabel *mainLabel;
 
   GtkBuilder *builder;
-  gtk_init(&argc, &argv);
 
   builder = gtk_builder_new();
   gtk_builder_add_from_file(builder, "MainMenu.glade", NULL);
@@ -20,6 +21,15 @@ int main(int argc, char *argv[]){
   g_object_unref(builder);
 
   gtk_widget_show_all(mainWindow);
+}
+
+int main(int argc, char *argv[]){
+
+
+  gtk_init(&argc, &argv);
+
+  CreateMenuWindow();
+
   gtk_main();
 
   return 0;
@@ -32,7 +42,7 @@ void exit_app() {
 
 void NimClicked(){
 
-  printf("Neem\n");
+  printf("N\n");
 
 }
 

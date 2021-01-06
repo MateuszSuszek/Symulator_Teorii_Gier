@@ -1,0 +1,1 @@
+# Symulator_Teorii_Gier

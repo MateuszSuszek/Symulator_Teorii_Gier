@@ -81,6 +81,8 @@ void NimStart(){
   int height = gtk_spin_button_get_value_as_int(colHgtSpin);
 
   PlayNim(isAI, columns, height);
+
+  gamemode = 0;
 }
 
 void ObstructionClicked(){

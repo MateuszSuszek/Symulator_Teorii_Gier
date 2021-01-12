@@ -1,8 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-void WriteBoard(int brd[], int colNum, int colHgt){
+#define max(a, b) (a > b ? a : b)
 
-  for(int i = colHgt-1; i >= 0; i--){
+void WriteBoard(int brd[], int colNum, int maks){
+  printf("\n");
+  for(int i = maks; i >= 1; i--){
     for(int j = 0; j < colNum; j++){
       if(brd[j] >= i){
         printf("o ");
@@ -21,6 +25,23 @@ void WriteBoard(int brd[], int colNum, int colHgt){
   printf("\n");
 }
 
+bool GameEnd(int brd[], int colNum){
+  for(int i = 0; i < colNum; i++){
+    if(brd[i] > 0){
+      return false;
+    }
+  }
+  return true;
+}
+
+int ZnajdzMaks(int brd[], int colNum){
+  int maks = 0;
+  for(int i = 0; i < colNum; i++){
+    maks = max(maks, brd[i]);
+  }
+  return maks;
+}
+
 int PlayNim(int isAI, int colNum, int colHgt){
 
   //printf("%d\n%d\n%d\n", isAI, colNum, colHgt);
@@ -28,32 +49,53 @@ int PlayNim(int isAI, int colNum, int colHgt){
   // Initialize game
 
   int brd[colNum];
+  bool ht[50];
+  int h = 0;
+  int najwyzsza = (colNum + colHgt)*3/2;
+  int maks = 0;
+
+  for(int i = 0; i < najwyzsza; i++){
+    ht[i] = 0;
+  }
 
   for(int i = 0; i < colNum; i++){
-    brd[i] = colHgt;
+
+    do{
+    int r = rand()%najwyzsza;
+    h = max(colHgt, r);
+
+    }while(ht[h] != 0);
+
+    ht[h] = 1;
+    brd[i] = h;
+    maks = max(maks, h);
   }
 
   printf("\n");
 
-  WriteBoard(brd, colNum, colHgt);
+  WriteBoard(brd, colNum, maks);
 
   //
 
-  int gameEnd = 0;
-
-  while(!gameEnd){
+  while(true){
     int o = 0, w = 0;
     printf("Ile oczek z której wieży chcesz zebrać?\n");
     scanf("%d %d", &o, &w);
-    while((o != 1 && o != 2) || w < 0 || w >= colNum || brd[w]-o < 0){
+    while(w <= 0 || w > colNum || brd[w-1]-o < 0){
       printf("Niepoprawne dane\n");
-      WriteBoard(brd, colNum, colHgt);
+      //WriteBoard(brd, colNum, maks);
       scanf("%d %d", &o, &w);
     }
+    brd[w-1] -= o;
 
-    brd[w] -= o;
+    maks = ZnajdzMaks(brd, colNum);
 
-    WriteBoard(brd, colNum, colHgt);
+    WriteBoard(brd, colNum, maks);
+
+    if(GameEnd(brd, colNum)){
+      printf("Koniec!\n");
+      break;
+    }
 
   }
 

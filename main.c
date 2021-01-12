@@ -3,7 +3,7 @@
 #include <gtk/gtk.h>
 
 GtkWidget *nimWindow;
-GtkToggleButton *AItog;
+GtkToggleButton *AItog, *Playertog;
 GtkSpinButton *colNumSpin, *colHgtSpin;
 GtkWidget *mainWindow;
 
@@ -36,6 +36,7 @@ void CreateNimSetupWindow(){
 
   nimWindow = GTK_WIDGET(gtk_builder_get_object(builder, "nimWindow"));
   AItog = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkAI"));
+  Playertog = GTK_TOGGLE_BUTTON(gtk_builder_get_object(builder, "checkPlayer"));
   colNumSpin = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "colNumSpin"));
   colHgtSpin = GTK_SPIN_BUTTON(gtk_builder_get_object(builder, "colHgtSpin"));
 
@@ -83,6 +84,7 @@ void NimStart(){
   PlayNim(isAI, columns, height);
 
   gamemode = 0;
+
 }
 
 void ObstructionClicked(){

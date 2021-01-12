@@ -3,16 +3,16 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkAdjustment" id="nimAdjustCol">
-    <property name="lower">1</property>
+    <property name="lower">3</property>
     <property name="upper">10</property>
-    <property name="value">1</property>
+    <property name="value">3</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
   <object class="GtkAdjustment" id="nimAdjustHgt">
-    <property name="lower">1</property>
+    <property name="lower">4</property>
     <property name="upper">20</property>
-    <property name="value">1</property>
+    <property name="value">400</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
   </object>
@@ -60,7 +60,7 @@
           <object class="GtkLabel" id="heightLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Wysokość kolumny:</property>
+            <property name="label" translatable="yes">Minimalna wysokość kolumny:</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
@@ -121,9 +121,10 @@
             <property name="receives_default">False</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
+            <property name="group">checkPlayer</property>
           </object>
           <packing>
-            <property name="left_attach">2</property>
+            <property name="left_attach">3</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -135,10 +136,9 @@
             <property name="receives_default">False</property>
             <property name="active">True</property>
             <property name="draw_indicator">True</property>
-            <property name="group">checkAI</property>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">0</property>
           </packing>
         </child>

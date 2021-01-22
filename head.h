@@ -1,1 +1,1 @@
-int PlayNim(int isAI, int colNum, int colHgt);
+int PlayNim(bool isAI, int colNum, int colHgt);

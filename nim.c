@@ -1,32 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+#include <ncurses.h>
 
 #define max(a, b) (a > b ? a : b)
+#define min(a, b) (a < b ? a : b)
+#define offset_x 12
+#define offset_y 12
 
-void WriteBoard(int brd[], int colNum, int maks);
 bool GameEnd(int brd[], int colNum); // Gra zakończy się, kiedy zebrany zostanie ostatni kamień
 int FindMax(int brd[], int colNum); // Wyszukuję najwyższy stos, przydatne przy wypisywaniu
 void InitializeBoard(int brd[], int colNum, int colHgt);
 void PlayerMove(int brd[], int colNum);
 void AIMove(int brd[], int colNum);
+void DisplayBoard(int brd[], int colNum);
+void ColourMarked(int brd[], int colNum, int x, int y, int colour);
 
 int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stosu
+
+  initscr();
+  cbreak();
+  start_color();
+  init_pair(1, COLOR_WHITE, 0);  // Domyślny kolor
+  init_pair(2, COLOR_RED, 0);   // Kolor zaznaczenia 1
+  init_pair(3, COLOR_BLUE, 0); // Kolor zaznaczenia 2
+  curs_set(0);
+  //noecho();
+  refresh();
 
   int brd[colNum];
   InitializeBoard(brd, colNum, colHgt);
 
-  WriteBoard(brd, colNum, FindMax(brd, colNum));
 
   while(true){
 
+    DisplayBoard(brd, colNum);
+
     if(!isAI){
       PlayerMove(brd, colNum);
+      //getch();
     }else{
       AIMove(brd, colNum);
     }
-
-    WriteBoard(brd, colNum, FindMax(brd, colNum));
 
     if(GameEnd(brd, colNum)){
       break;
@@ -34,12 +50,17 @@ int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stos
 
     isAI = !isAI;
   }
-
+  clear();
   if(isAI){
-    printf("Wygrał komputer!\n");
+    mvprintw(offset_y, offset_x, "Wygrał komputer!");
   }else{
-    printf("Wygrał gracz!\n");
+    mvprintw(offset_y, offset_x, "Wygrał gracz!");
   }
+  getch();
+  curs_set(1);
+  clear();
+  endwin();
+
   return 0;
 }
 
@@ -47,6 +68,8 @@ void InitializeBoard(int brd[], int colNum, int colHgt){
 
   bool ht[50];
   int h = 0;
+
+  srand(time(0));
 
   for(int i = 0; i < colNum; i++){
     ht[i] = 0;
@@ -65,12 +88,20 @@ void InitializeBoard(int brd[], int colNum, int colHgt){
   }
 }
 
-int FindMax(int brd[], int colNum){
-  int maks = 0;
+void DisplayBoard(int brd[], int colNum){
+  clear();
+  move(offset_x, offset_y);
   for(int i = 0; i < colNum; i++){
-    maks = max(maks, brd[i]);
+    for(int j = 0; j < brd[i]; j++){
+      attron(COLOR_PAIR(1));
+      mvprintw(offset_x - j, offset_y + 2*i, "%c", 'o');
+      attroff(COLOR_PAIR(1));
+    }
   }
-  return maks;
+  for(int i = 0; i < colNum; i++){
+    mvprintw(offset_x + 2, offset_y + 2*i, "%d", brd[i]);
+  }
+  refresh();
 }
 
 bool GameEnd(int brd[], int colNum){
@@ -82,37 +113,68 @@ bool GameEnd(int brd[], int colNum){
   return true;
 }
 
-void WriteBoard(int brd[], int colNum, int maks){ // Tymczasowe rozwiązanie
-  printf("\n");
-  for(int i = maks; i >= 1; i--){
-    for(int j = 0; j < colNum; j++){
-      if(brd[j] >= i){
-        printf("o ");
-      }else{
-        printf("  ");
-      }
-    }
-    printf("\n");
-  }
+void ColourMarked(int brd[], int colNum, int x, int y, int colour){
 
-  printf("\n");
+  attron(COLOR_PAIR(colour));
+
+  for(int i = x; i < brd[y]; i++){
+    mvprintw(offset_x - i, offset_y + 2*y, "%c", 'o');
+  }
+  //mvprintw(offset_x + 1, offset_y, "x:%d y:%d", x, y);
+
+  attroff(COLOR_PAIR(colour));
+
 }
 
 void PlayerMove(int brd[], int colNum){
-  int o = 0, w = 0;
-  printf("Ile oczek z której wieży chcesz zebrać?\n");
-  scanf("%d %d", &o, &w);
-  while(w <= 0 || w > colNum || brd[w-1]-o < 0){
-    WriteBoard(brd, colNum, FindMax(brd, colNum));
-    printf("Niepoprawne dane\n");
-    printf("Ile oczek z której wieży chcesz zebrać?\n");
-    scanf("%d %d", &o, &w);
+  char input;
+  int x = brd[0]-1;
+  int y = 0;
+
+  while(input != '\n'){
+
+    while(brd[y] == 0){
+      y++;
+      x = brd[y]-1;
+    }
+
+
+    attron(COLOR_PAIR(1));
+    DisplayBoard(brd, colNum);
+    attroff(COLOR_PAIR(1));
+
+    ColourMarked(brd, colNum, x, y, 2);
+    input = getch();
+    //mvprintw(offset_x + 1, offset_y, "%c", input);
+    if(input == 'w'){
+      x = min(x+1, brd[y]-1);
+    }else if(input == 's'){
+      x = max(x-1, 0);
+    }else if(input == 'a'){
+      if(y > 0){
+        y--;
+        x = brd[y]-1;
+      }
+    }else if(input == 'd'){
+      if(y < colNum-1){
+        y++;
+        x = brd[y]-1;
+      }
+    }
   }
-  brd[w-1] -= o;
+
+  brd[y] = x;
+
 }
 
 void AIMove(int brd[], int colNum){
 
+  int delay = 1000; // Jak długo trwa podświetlenie wyboru komputera (ms)
+
+  attron(COLOR_PAIR(1));
+  DisplayBoard(brd, colNum);
+  attroff(COLOR_PAIR(1));
+  
   int g = 0;
   for(int i = 0; i < colNum; i++){
     g ^= brd[i];
@@ -120,6 +182,9 @@ void AIMove(int brd[], int colNum){
   if(g == 0){
     for(int i = 0; i < colNum; i++){
       if(brd[i] > 0){
+        ColourMarked(brd, colNum, brd[i]-1, i, 3);
+        //refresh();
+        napms(delay);
         brd[i]--;
         break;
       }
@@ -130,11 +195,17 @@ void AIMove(int brd[], int colNum){
       if(brd[i] > 0){
         if(xor == 0){
           brd[i] = 0;
+          ColourMarked(brd, colNum, 0, i, 3);
+          //refresh();
+          napms(delay);
           return;
         }else{
           for(int j = 1; j < brd[i]; j++){
             if((xor ^ j) == 0){
               brd[i] = j;
+              ColourMarked(brd, colNum, j, i, 3);
+              //refresh();
+              napms(delay);
               return;
             }
           }

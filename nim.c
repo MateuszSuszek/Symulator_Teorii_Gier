@@ -4,18 +4,18 @@
 #include <time.h>
 #include <ncurses.h>
 
+
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
 #define offset_x 12
 #define offset_y 12
 
 bool GameEnd(int brd[], int colNum); // Gra zakończy się, kiedy zebrany zostanie ostatni kamień
-int FindMax(int brd[], int colNum); // Wyszukuję najwyższy stos, przydatne przy wypisywaniu
 void InitializeBoard(int brd[], int colNum, int colHgt);
 void PlayerMove(int brd[], int colNum);
 void AIMove(int brd[], int colNum);
 void DisplayBoard(int brd[], int colNum);
-void ColourMarked(int brd[], int colNum, int x, int y, int colour);
+void ColourMarked(int brd[], int colNum, int x, int y, int colour_id);
 
 int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stosu
 
@@ -26,7 +26,6 @@ int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stos
   init_pair(2, COLOR_RED, 0);   // Kolor zaznaczenia 1
   init_pair(3, COLOR_BLUE, 0); // Kolor zaznaczenia 2
   curs_set(0);
-  //noecho();
   refresh();
 
   int brd[colNum];
@@ -39,7 +38,6 @@ int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stos
 
     if(!isAI){
       PlayerMove(brd, colNum);
-      //getch();
     }else{
       AIMove(brd, colNum);
     }
@@ -52,9 +50,9 @@ int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stos
   }
   clear();
   if(isAI){
-    mvprintw(offset_y, offset_x, "Wygrał komputer!");
+    mvprintw(offset_y, offset_x, "The AI won!");
   }else{
-    mvprintw(offset_y, offset_x, "Wygrał gracz!");
+    mvprintw(offset_y, offset_x, "The Player won!");
   }
   getch();
   curs_set(1);
@@ -98,9 +96,9 @@ void DisplayBoard(int brd[], int colNum){
       attroff(COLOR_PAIR(1));
     }
   }
-  for(int i = 0; i < colNum; i++){
+  /*for(int i = 0; i < colNum; i++){
     mvprintw(offset_x + 2, offset_y + 2*i, "%d", brd[i]);
-  }
+  }*/
   refresh();
 }
 
@@ -113,16 +111,16 @@ bool GameEnd(int brd[], int colNum){
   return true;
 }
 
-void ColourMarked(int brd[], int colNum, int x, int y, int colour){
+void ColourMarked(int brd[], int colNum, int x, int y, int colour_id){
 
-  attron(COLOR_PAIR(colour));
+  attron(COLOR_PAIR(colour_id));
 
   for(int i = x; i < brd[y]; i++){
     mvprintw(offset_x - i, offset_y + 2*y, "%c", 'o');
   }
   //mvprintw(offset_x + 1, offset_y, "x:%d y:%d", x, y);
 
-  attroff(COLOR_PAIR(colour));
+  attroff(COLOR_PAIR(colour_id));
 
 }
 
@@ -163,18 +161,14 @@ void PlayerMove(int brd[], int colNum){
     }
   }
 
+  ColourMarked(brd, colNum, 0, 0, 3);
+
   brd[y] = x;
 
 }
 
 void AIMove(int brd[], int colNum){
 
-  int delay = 1000; // Jak długo trwa podświetlenie wyboru komputera (ms)
-
-  attron(COLOR_PAIR(1));
-  DisplayBoard(brd, colNum);
-  attroff(COLOR_PAIR(1));
-  
   int g = 0;
   for(int i = 0; i < colNum; i++){
     g ^= brd[i];
@@ -183,8 +177,6 @@ void AIMove(int brd[], int colNum){
     for(int i = 0; i < colNum; i++){
       if(brd[i] > 0){
         ColourMarked(brd, colNum, brd[i]-1, i, 3);
-        //refresh();
-        napms(delay);
         brd[i]--;
         break;
       }
@@ -196,16 +188,12 @@ void AIMove(int brd[], int colNum){
         if(xor == 0){
           brd[i] = 0;
           ColourMarked(brd, colNum, 0, i, 3);
-          //refresh();
-          napms(delay);
           return;
         }else{
           for(int j = 1; j < brd[i]; j++){
             if((xor ^ j) == 0){
               brd[i] = j;
               ColourMarked(brd, colNum, j, i, 3);
-              //refresh();
-              napms(delay);
               return;
             }
           }

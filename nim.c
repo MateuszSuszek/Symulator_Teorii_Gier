@@ -7,8 +7,8 @@
 
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
-#define offset_x 12
-#define offset_y 12
+#define offset_x 20
+#define offset_y 20
 
 bool GameEnd(int brd[], int colNum); // Gra zakończy się, kiedy zebrany zostanie ostatni kamień
 void InitializeBoard(int brd[], int colNum, int colHgt);
@@ -66,7 +66,7 @@ void InitializeBoard(int brd[], int colNum, int colHgt){
 
   bool ht[50];
   int h = 0;
-
+  int upperbound = colNum + colHgt + 1;
   srand(time(0));
 
   for(int i = 0; i < colNum; i++){
@@ -74,12 +74,16 @@ void InitializeBoard(int brd[], int colNum, int colHgt){
   }
 
   for(int i = 0; i < colNum; i++){
-
+    int stop = 0;
     do{
-      int r = rand()%((colNum + colHgt)*5/4);  // Dla każdego stosu losuję
-      h = max(colHgt, r);                     // jego wysokość w pewnym przedziale
-
-    }while(ht[h] != 0);                     // Wysokość nie może się powtórzyć
+      stop++;
+      if(stop > 1000){
+        stop = 0;
+        upperbound++;
+      }
+      int r = rand()%upperbound;
+      h = max(colHgt, r);
+    }while(ht[h] != 0);
 
     ht[h] = 1;
     brd[i] = h;
@@ -129,13 +133,18 @@ void PlayerMove(int brd[], int colNum){
   int x = brd[0]-1;
   int y = 0;
 
-  while(input != '\n'){
 
-    while(brd[y] == 0){
-      y++;
-      x = brd[y]-1;
+  if(brd[y] == 0){
+    for(int i = 0; i < colNum; i++){
+      if(brd[i] != 0){
+        y = i;
+        x = brd[y] - 1;
+        break;
+      }
     }
+  }
 
+  while(input != '\n'){
 
     attron(COLOR_PAIR(1));
     DisplayBoard(brd, colNum);
@@ -149,19 +158,23 @@ void PlayerMove(int brd[], int colNum){
     }else if(input == 's'){
       x = max(x-1, 0);
     }else if(input == 'a'){
-      if(y > 0){
-        y--;
-        x = brd[y]-1;
+      for(int i = y-1; i >= 0; i--){
+        if(brd[i] != 0){
+          y = i;
+          x = brd[y]-1;
+          break;
+        }
       }
     }else if(input == 'd'){
-      if(y < colNum-1){
-        y++;
-        x = brd[y]-1;
+      for(int i = y+1; i < colNum; i++){
+        if(brd[i] != 0){
+          y = i;
+          x = brd[y]-1;
+          break;
+        }
       }
     }
   }
-
-  ColourMarked(brd, colNum, 0, 0, 3);
 
   brd[y] = x;
 

@@ -59,4 +59,4 @@ dkms.conf
 SG
 # Glade temporary files
 *~
-[]#NimMenu.glade#
+*#

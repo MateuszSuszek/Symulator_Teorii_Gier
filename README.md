@@ -6,18 +6,17 @@ Program umożliwi użytkownikowi grę w wybrane gry przeciwko komputerowi lub in
 ### Funkcje programu i punktacja zastępowalnych części projektu:  
 1. Menu w GTK umożliwiające: **(20p)**  
 		a) wybór gry,  
-		b) dostosowanie rozmiarów planszy,  
-		c) wybór przeciwnika: inny gracz / komputer,  
-		d) wybór kto rozpoczyna grę.  
+		b) dostosowanie rozmiarów planszy,    
+		c) wybór kto rozpoczyna grę.  
 		
-2. Możliwość wczytania oraz zapisu stanu gry do pliku, **(10p)**   
+2. ~~Możliwość wczytania oraz zapisu stanu gry do pliku, **(10p)**~~   
 
-3. Wykorzystanie kodowania UTF-8, **(10p)**  
+3. ~~Wykorzystanie kodowania UTF-8, **(10p)**~~  
 
 4. Logika pozwalająca obliczać pozycję wygrywającą dla gier: **(20p)**  
 	a) Nim,  
-	b) Obstruction (http://www.lkozma.net/game.html),  
-	c) Domineering. 
+	b) ~~Obstruction (http://www.lkozma.net/game.html),~~  
+	c) ~~Domineering.~~ 
 	
 5. Wizualizacja stanu gry przy użyciu biblioteki ncurses **(20p)**  
 

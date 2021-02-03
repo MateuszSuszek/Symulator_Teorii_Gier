@@ -4,7 +4,6 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
-    <property name="title" translatable="yes">Symulator gier</property>
     <property name="default_width">600</property>
     <property name="default_height">250</property>
     <signal name="destroy" handler="exit_app" swapped="no"/>
@@ -19,43 +18,17 @@
         <property name="column_homogeneous">True</property>
         <child>
           <object class="GtkButton" id="buttonNim">
-            <property name="label" translatable="yes">Nim</property>
+            <property name="label" translatable="yes">Zagraj</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
+            <property name="image_position">top</property>
             <signal name="clicked" handler="NimClicked" swapped="no"/>
           </object>
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="height">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="buttonObstruction">
-            <property name="label" translatable="yes">Obstruction</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="ObstructionClicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-            <property name="height">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="butonDomineering">
-            <property name="label" translatable="yes">Domineering</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="DomineeringClicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">1</property>
+            <property name="width">3</property>
             <property name="height">2</property>
           </packing>
         </child>
@@ -63,7 +36,7 @@
           <object class="GtkLabel" id="mainLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Wybierz grę:</property>
+            <property name="label" translatable="yes">Symulator gry Nim</property>
             <attributes>
               <attribute name="font-desc" value="TeX Gyre Adventor 24"/>
             </attributes>

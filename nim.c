@@ -16,6 +16,7 @@ void PlayerMove(int brd[], int colNum);
 void AIMove(int brd[], int colNum);
 void DisplayBoard(int brd[], int colNum);
 void ColourMarked(int brd[], int colNum, int x, int y, int colour_id);
+bool IsWinningPosition(int brd[], int colNum);
 
 int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stosu
 
@@ -29,8 +30,10 @@ int PlayNim(bool isAI, int colNum, int colHgt){ // colHgt - min. wysokość stos
   refresh();
 
   int brd[colNum];
-  InitializeBoard(brd, colNum, colHgt);
 
+  do{
+    InitializeBoard(brd, colNum, colHgt);
+  }while(!isAI && !IsWinningPosition(brd, colNum));
 
   while(true){
 
@@ -214,4 +217,14 @@ void AIMove(int brd[], int colNum){
       }
     }
   }
+}
+
+bool IsWinningPosition(int brd[], int colNum){
+  int xor = 0;
+
+  for(int i = 0; i < colNum; i++){
+    xor ^= brd[i];
+  }
+
+  return xor != 0;
 }
